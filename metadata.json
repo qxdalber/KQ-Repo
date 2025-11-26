@@ -1,0 +1,7 @@
+{
+  "name": "KALEN COMMAND",
+  "description": "A gamified, sci-fi themed English learning adventure for kids, featuring AI-powered vocabulary missions, interactive stories, and syntax decoding challenges.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
