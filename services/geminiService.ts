@@ -1,7 +1,11 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { VocabularyWord, GrammarCorrection, StorySegment, TenseExercise, ClozeExercise, ReadingExercise, ListeningExercise, SpeakingExercise, Language, DifficultyLevel } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// SAFELY Initialize AI Client
+// If the key is missing during build/deploy, we default to a placeholder to allow the app to load UI.
+// The error will only occur when a user actually triggers a function.
+const apiKey = process.env.API_KEY || 'MISSING_API_KEY';
+const ai = new GoogleGenAI({ apiKey: apiKey });
 
 const MODEL_TEXT = 'gemini-2.5-flash';
 const MODEL_IMAGE = 'gemini-2.5-flash-image';
@@ -154,8 +158,8 @@ export const correctGrammar = async (sentence: string, language: Language = 'en'
     console.error("Error correcting grammar:", error);
     return { 
         corrected: sentence, 
-        explanation: "System Error.", 
-        explanationCn: "系统错误。",
+        explanation: "System Error or Missing API Key. Please check settings.", 
+        explanationCn: "系统错误或缺少API密钥。",
         score: 0 
     };
   }
@@ -206,8 +210,8 @@ export const continueStory = async (history: string[], choice: string, language:
   } catch (error) {
     console.error("Error generating story:", error);
     return {
-        text: "Signal Lost.",
-        textCn: "信号丢失。",
+        text: "Connection Lost. Please check your Comm-Link (API Key).",
+        textCn: "连接丢失。请检查您的API密钥。",
         options: ["Retry"],
         optionsCn: ["重试"],
         imagePrompt: "static noise"
